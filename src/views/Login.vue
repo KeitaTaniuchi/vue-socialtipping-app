@@ -3,36 +3,18 @@
     <p class="mb-20 text-center text-4xl">ログイン画面</p>
     <div class="mt-8">
       <form class="w-10/12 mx-auto md:max-w-md">
-        <div class="mb-8">
-          <label for="email" class="text-sm block">メールアドレス</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="メールアドレスを入力してください"
-            class="
-              w-full
-              py-2
-              border-b
-              focus:outline-none focus:border-b-2 focus:border-indigo-500
-              placeholder-gray-500 placeholder-opacity-50
-            "
-          />
-        </div>
-        <div class="mb-8">
-          <label for="password" class="text-sm block">パスワード</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="パスワードを入力してください"
-            class="
-              w-full
-              py-2
-              border-b
-              focus:outline-none focus:border-b-2 focus:border-indigo-500
-              placeholder-gray-500 placeholder-opacity-50
-            "
-          />
-        </div>
+        <FormInput
+          v-model="userEmail"
+          label="メールアドレス"
+          type="email"
+          placeHolder="メールアドレスを入力してください"
+        />
+        <FormInput
+          v-model="userPassword"
+          label="パスワード"
+          type="password"
+          placeHolder="パスワードを入力してください"
+        />
         <button
           type="submit"
           class="
@@ -61,7 +43,15 @@
 </template>
 
 <script>
+import FormInput from "../components/FormInput.vue";
 export default {
   name: "Login",
+  components: { FormInput },
+  data() {
+    return {
+      userEmail: "",
+      userPassword: "",
+    };
+  },
 };
 </script>
