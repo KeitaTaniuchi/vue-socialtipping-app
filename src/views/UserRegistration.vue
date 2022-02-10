@@ -4,6 +4,12 @@
     <div class="mt-8">
       <form class="w-10/12 mx-auto md:max-w-md">
         <FormInput
+          v-model="userName"
+          label="ユーザー名"
+          type="text"
+          placeHolder="ユーザー名を入力してください"
+        />
+        <FormInput
           v-model="userEmail"
           label="メールアドレス"
           type="email"
@@ -15,23 +21,6 @@
           type="password"
           placeHolder="パスワードを入力してください"
         />
-        <button
-          type="submit"
-          class="
-            text-blue-500
-            block
-            px-2
-            py-1
-            border border-blue-500
-            font-semibold
-            rounded
-            hover:bg-blue-100
-            mx-auto
-          "
-        >
-          ログイン
-        </button>
-        <router-link to="/UserRegistration">新規登録はこちらから</router-link>
       </form>
     </div>
   </div>
@@ -40,10 +29,11 @@
 <script>
 import FormInput from "../components/FormInput.vue";
 export default {
-  name: "Login",
+  name: "UserRegistration",
   components: { FormInput },
   data() {
     return {
+      userName: "",
       userEmail: "",
       userPassword: "",
     };
