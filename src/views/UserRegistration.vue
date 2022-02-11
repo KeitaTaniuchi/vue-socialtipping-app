@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <p class="mb-20 text-center text-4xl">ログイン画面</p>
+    <p class="mb-20 text-center text-4xl">新規登録画面</p>
     <div class="mt-8">
       <form class="w-10/12 mx-auto md:max-w-md">
         <FormInput
@@ -10,17 +10,33 @@
           placeHolder="ユーザー名を入力してください"
         />
         <FormInput
-          v-model="userEmail"
+          v-model="email"
           label="メールアドレス"
           type="email"
           placeHolder="メールアドレスを入力してください"
         />
         <FormInput
-          v-model="userPassword"
+          v-model="password"
           label="パスワード"
           type="password"
           placeHolder="パスワードを入力してください"
         />
+        <button
+          @click="signUp"
+          class="
+            text-blue-500
+            block
+            px-2
+            py-1
+            border border-blue-500
+            font-semibold
+            rounded
+            hover:bg-blue-100
+            mx-auto
+          "
+        >
+          新規登録
+        </button>
       </form>
     </div>
   </div>
@@ -34,9 +50,12 @@ export default {
   data() {
     return {
       userName: "",
-      userEmail: "",
-      userPassword: "",
+      email: "",
+      password: "",
     };
+  },
+  methods: {
+    signUp() {},
   },
 };
 </script>
