@@ -8,40 +8,42 @@
           label="メールアドレス"
           type="email"
           placeHolder="メールアドレスを入力してください"
+          class="mt-8"
         />
+
         <FormInput
           v-model="userPassword"
           label="パスワード"
           type="password"
           placeHolder="パスワードを入力してください"
+          class="mt-8"
         />
-        <button
-          type="submit"
+
+        <AccountRelatedButton label="ログイン" type="button" class="mt-8" />
+
+        <div
           class="
-            text-blue-500
-            block
-            px-2
-            py-1
-            border border-blue-500
-            font-semibold
-            rounded
-            hover:bg-blue-100
-            mx-auto
+            mt-8
+            text-center
+            underline
+            text-blue-600
+            hover:text-blue-800
+            visited:text-purple-600
           "
         >
-          ログイン
-        </button>
-        <router-link to="/UserRegistration">新規登録はこちらから</router-link>
+          <router-link to="/UserRegistration">新規登録はこちらから</router-link>
+        </div>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
 export default {
   name: "Login",
-  components: { FormInput },
+  components: { FormInput, AccountRelatedButton },
   data() {
     return {
       userEmail: "",

@@ -1,6 +1,6 @@
 <template>
-  <div class="mb-8">
-    <label :for="type" class="text-sm block">{{ label }}</label>
+  <div>
+    <label :for="type" class="block">{{ label }}</label>
     <input
       :type="type"
       :id="type"
@@ -8,7 +8,7 @@
       @input="updateValue"
       class="
         w-full
-        py-2
+        pt-3
         border-b
         focus:outline-none focus:border-b-2 focus:border-indigo-500
         placeholder-gray-500 placeholder-opacity-50
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "FormInput",
   data() {
     return {
       value: "",
