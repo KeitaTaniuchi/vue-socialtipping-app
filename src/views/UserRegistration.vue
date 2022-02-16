@@ -1,6 +1,9 @@
 <template>
   <div class="container mx-auto">
     <p class="mb-12 text-center text-4xl">新規登録画面</p>
+    <font-awesome-icon icon="fa-solid fa-eye" />
+    <font-awesome-icon icon="fa-solid fa-eye-slash" />
+    <p>テスト</p>
     <div class="mt-8">
       <form class="w-10/12 mx-auto md:max-w-md">
         <FormInput
