@@ -1,47 +1,46 @@
 <template>
   <div class="container mx-auto">
     <p class="mb-12 text-center text-4xl">新規登録画面</p>
-    <font-awesome-icon icon="fa-solid fa-eye" />
-    <font-awesome-icon icon="fa-solid fa-eye-slash" />
-    <p>テスト</p>
-    <div class="mt-8">
-      <form class="w-10/12 mx-auto md:max-w-md">
-        <FormInput
-          v-model="userName"
-          label="ユーザー名"
-          type="text"
-          placeHolder="ユーザー名を入力してください"
-          class="mt-8"
-        />
+    <form class="w-10/12 mx-auto md:max-w-md">
+      <FormInput
+        v-model="userName"
+        label="ユーザー名"
+        type="text"
+        placeHolder="ユーザー名を入力してください"
+        class="mt-8"
+      />
 
-        <FormInput
-          v-model="email"
-          label="メールアドレス"
-          type="email"
-          placeHolder="メールアドレスを入力してください"
-          class="mt-8"
-        />
-        <p v-show="emailError" class="text-red-500 mt-3">{{ emailError }}</p>
+      <FormInput
+        v-model="email"
+        label="メールアドレス"
+        type="email"
+        placeHolder="メールアドレスを入力してください"
+        class="mt-8"
+      />
+      <p v-show="emailError" class="text-red-500 mt-3">{{ emailError }}</p>
 
-        <FormInput
-          v-model="password"
-          label="パスワード"
-          type="password"
-          placeHolder="パスワードを入力してください"
-          class="mt-8"
-        />
-        <p v-show="passwordError" class="text-red-500 mt-3">
-          {{ passwordError }}
-        </p>
+      <FormInput
+        v-model="password"
+        label="パスワード"
+        :type="updateType"
+        placeHolder="パスワードを入力してください"
+        class="mt-8 relative"
+      >
+        <button type="button" class="ml-2" @click="togglePasswordDisplay">
+          <font-awesome-icon :icon="updateIcon" />
+        </button>
+      </FormInput>
+      <p v-show="passwordError" class="text-red-500 mt-3">
+        {{ passwordError }}
+      </p>
 
-        <AccountRelatedButton
-          @parentEvent="registerUser"
-          label="新規登録"
-          type="button"
-          class="mt-8"
-        />
-      </form>
-    </div>
+      <AccountRelatedButton
+        @parentEvent="registerUser"
+        label="新規登録"
+        type="button"
+        class="mt-8"
+      />
+    </form>
   </div>
 </template>
 
@@ -59,9 +58,21 @@ export default {
       password: "",
       emailError: "",
       passwordError: "",
+      isChecked: false,
     };
   },
+  computed: {
+    updateType() {
+      return this.isChecked ? "text" : "password";
+    },
+    updateIcon() {
+      return this.isChecked ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
+    },
+  },
   methods: {
+    togglePasswordDisplay() {
+      this.isChecked = !this.isChecked;
+    },
     registerUser() {
       this.emailError = "";
       this.passwordError = "";

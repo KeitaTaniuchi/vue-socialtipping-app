@@ -7,13 +7,13 @@
       :placeholder="placeHolder"
       @input="updateValue"
       class="
-        w-full
+        w-11/12
         pt-3
         border-b
         focus:outline-none focus:border-b-2 focus:border-indigo-500
         placeholder-gray-500 placeholder-opacity-50
       "
-    />
+    /><slot></slot>
   </div>
 </template>
 
@@ -23,6 +23,7 @@ export default {
   data() {
     return {
       value: "",
+      test: this.type,
     };
   },
   props: {
