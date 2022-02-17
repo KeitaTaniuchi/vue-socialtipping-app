@@ -23,7 +23,6 @@ export default {
   data() {
     return {
       value: "",
-      test: this.type,
     };
   },
   props: {

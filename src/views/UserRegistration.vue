@@ -22,13 +22,11 @@
       <FormInput
         v-model="password"
         label="パスワード"
-        :type="updateType"
+        :type="type"
         placeHolder="パスワードを入力してください"
         class="mt-8 relative"
       >
-        <button type="button" class="ml-2" @click="togglePasswordDisplay">
-          <font-awesome-icon :icon="updateIcon" />
-        </button>
+        <TogglePasswordDisplayButton @updateType="type = $event" />
       </FormInput>
       <p v-show="passwordError" class="text-red-500 mt-3">
         {{ passwordError }}
@@ -47,10 +45,11 @@
 <script>
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
+import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 export default {
   name: "UserRegistration",
-  components: { FormInput, AccountRelatedButton },
+  components: { FormInput, AccountRelatedButton, TogglePasswordDisplayButton },
   data() {
     return {
       userName: "",
@@ -58,21 +57,10 @@ export default {
       password: "",
       emailError: "",
       passwordError: "",
-      isChecked: false,
+      type: "password",
     };
   },
-  computed: {
-    updateType() {
-      return this.isChecked ? "text" : "password";
-    },
-    updateIcon() {
-      return this.isChecked ? "fa-solid fa-eye" : "fa-solid fa-eye-slash";
-    },
-  },
   methods: {
-    togglePasswordDisplay() {
-      this.isChecked = !this.isChecked;
-    },
     registerUser() {
       this.emailError = "";
       this.passwordError = "";
