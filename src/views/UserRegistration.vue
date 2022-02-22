@@ -9,6 +9,9 @@
         placeHolder="ユーザー名を入力してください"
         class="mt-8"
       />
+      <div v-if="$v.userName.$error" class="text-red-500 mt-3">
+        <p v-if="!$v.userName.required">ユーザー名を入力してください</p>
+      </div>
 
       <FormInput
         v-model="email"
@@ -17,7 +20,17 @@
         placeHolder="メールアドレスを入力してください"
         class="mt-8"
       />
-      <p v-show="emailError" class="text-red-500 mt-3">{{ emailError }}</p>
+      <div class="text-red-500 mt-3">
+        <div v-if="$v.email.$error">
+          <p v-if="!$v.email.required">メールアドレスを入力してください</p>
+          <p v-if="!$v.email.email">
+            入力されたメールアドレスが正しくありません
+          </p>
+        </div>
+        <p v-if="!emailAlreadyInUseDisplayDecision">
+          このメールアドレスは既に使用されています
+        </p>
+      </div>
 
       <FormInput
         v-model="password"
@@ -28,9 +41,12 @@
       >
         <TogglePasswordDisplayButton @updateType="type = $event" />
       </FormInput>
-      <p v-show="passwordError" class="text-red-500 mt-3">
-        {{ passwordError }}
-      </p>
+      <div v-if="$v.password.$error" class="text-red-500 mt-3">
+        <p v-if="!$v.password.required">パスワードを入力してください</p>
+        <p v-if="!$v.password.minLength">
+          パスワードは6文字以上入力してください
+        </p>
+      </div>
 
       <AccountRelatedButton
         @parentEvent="registerUser"
@@ -46,6 +62,7 @@
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
+import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   name: "UserRegistration",
   components: { FormInput, AccountRelatedButton, TogglePasswordDisplayButton },
@@ -54,20 +71,31 @@ export default {
       userName: "",
       email: "",
       password: "",
-      emailError: "",
-      passwordError: "",
       type: "password",
     };
   },
+  computed: {
+    emailAlreadyInUseDisplayDecision() {
+      return this.$store.getters[
+        "RegisterUser/emailAlreadyInUseDisplayDecision"
+      ];
+    },
+  },
   methods: {
     registerUser() {
-      this.emailError = "";
-      this.passwordError = "";
-      this.$store.dispatch("registerUser", {
-        email: this.email,
-        password: this.password,
-      });
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.$store.dispatch("RegisterUser/registerUser", {
+          email: this.email,
+          password: this.password,
+        });
+      }
     },
+  },
+  validations: {
+    userName: { required },
+    email: { required, email },
+    password: { required, minLength: minLength(6) },
   },
 };
 </script>

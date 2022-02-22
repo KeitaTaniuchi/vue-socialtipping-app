@@ -6,6 +6,7 @@
       :id="type"
       :placeholder="placeHolder"
       @input="updateValue"
+      @blur="executeParentEvent"
       class="
         w-11/12
         pt-3
@@ -42,6 +43,9 @@ export default {
   methods: {
     updateValue: function (e) {
       this.$emit("input", e.target.value);
+    },
+    executeParentEvent: function () {
+      this.$emit("parentEvent");
     },
   },
 };
