@@ -34,19 +34,29 @@
 
       <FormInput
         v-model="password"
+        @input="passwordRegexpDecision"
         label="パスワード"
         :type="type"
         placeHolder="パスワードを入力してください"
-        class="mt-8 relative"
+        class="mt-8"
       >
         <TogglePasswordDisplayButton @updateType="type = $event" />
       </FormInput>
       <div v-if="$v.password.$error" class="text-red-500 mt-3">
+        <div v-if="password !== ''">
+          <p v-if="password === userName">
+            ユーザー名と同じ文字列が入力されています
+          </p>
+          <p v-if="password === email">
+            メールアドレスと同じ文字列が入力されています
+          </p>
+        </div>
         <p v-if="!$v.password.required">パスワードを入力してください</p>
         <p v-if="!$v.password.minLength">
-          パスワードは6文字以上入力してください
+          パスワードは12文字以上入力してください
         </p>
       </div>
+      <p>{{ passwordErrorMessage }}</p>
 
       <AccountRelatedButton
         @parentEvent="registerUser"
@@ -80,8 +90,14 @@ export default {
         "RegisterUser/emailAlreadyInUseDisplayDecision"
       ];
     },
+    passwordErrorMessage() {
+      return this.$store.getters["PasswordRegexpDecision/errorMessage"];
+    },
   },
   methods: {
+    passwordRegexpDecision(e) {
+      this.$store.commit("PasswordRegexpDecision/updateErrorMessage", e);
+    },
     registerUser() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
@@ -95,7 +111,7 @@ export default {
   validations: {
     userName: { required },
     email: { required, email },
-    password: { required, minLength: minLength(6) },
+    password: { required, minLength: minLength(12) },
   },
 };
 </script>
