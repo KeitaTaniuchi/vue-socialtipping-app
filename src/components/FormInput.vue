@@ -1,6 +1,7 @@
 <template>
   <div>
     <label :for="type" class="block">{{ label }}</label>
+    <slot name="passwordCriteria"></slot>
     <input
       :type="type"
       :id="type"
@@ -14,7 +15,7 @@
         focus:outline-none focus:border-b-2 focus:border-indigo-500
         placeholder-gray-500 placeholder-opacity-50
       "
-    /><slot></slot>
+    /><slot name="togglePasswordDisplayButton"></slot>
   </div>
 </template>
 

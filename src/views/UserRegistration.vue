@@ -40,7 +40,23 @@
         placeHolder="パスワードを入力してください"
         class="mt-8"
       >
-        <TogglePasswordDisplayButton @updateType="type = $event" />
+        <template v-slot:passwordCriteria>
+          <button type="button" @click="isOpen = !isOpen">
+            パスワードの条件
+          </button>
+          <collapse-transition>
+            <div v-show="isOpen">
+              <ol>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+              </ol>
+            </div>
+          </collapse-transition>
+        </template>
+        <template v-slot:togglePasswordDisplayButton>
+          <TogglePasswordDisplayButton @updateType="type = $event" />
+        </template>
       </FormInput>
       <div v-if="$v.password.$error" class="text-red-500 mt-3">
         <div v-if="password !== ''">
@@ -72,16 +88,23 @@
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
+import { CollapseTransition } from "@ivanv/vue-collapse-transition";
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   name: "UserRegistration",
-  components: { FormInput, AccountRelatedButton, TogglePasswordDisplayButton },
+  components: {
+    FormInput,
+    AccountRelatedButton,
+    TogglePasswordDisplayButton,
+    CollapseTransition,
+  },
   data() {
     return {
       userName: "",
       email: "",
       password: "",
       type: "password",
+      isOpen: false,
     };
   },
   computed: {
