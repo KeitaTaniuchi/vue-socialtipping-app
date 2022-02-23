@@ -4,9 +4,7 @@
     :type="type"
     class="
       text-blue-500
-      block
       px-2
-      py-1
       border border-blue-500
       font-semibold
       rounded

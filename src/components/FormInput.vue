@@ -1,7 +1,8 @@
 <template>
   <div>
-    <label :for="type" class="block">{{ label }}</label>
-    <slot name="passwordCriteria"></slot>
+    <label :for="type" class="block"
+      >{{ label }} <slot name="passwordCriteria"></slot
+    ></label>
     <input
       :type="type"
       :id="type"

@@ -41,16 +41,33 @@
         class="mt-8"
       >
         <template v-slot:passwordCriteria>
-          <button type="button" @click="isOpen = !isOpen">
-            パスワードの条件
-          </button>
+          <AccountRelatedButton
+            @parentEvent="isOpen = !isOpen"
+            label="パスワードの必須条件"
+            type="button"
+            class="ml-2"
+          />
           <collapse-transition>
-            <div v-show="isOpen">
-              <ol>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-              </ol>
+            <div v-show="isOpen" class="space-y-2">
+              <ul
+                class="
+                  list-decimal list-inside
+                  my-4
+                  p-2
+                  border border-blue-500
+                  rounded
+                  space-y-2
+                "
+              >
+                <li>12文字以上</li>
+                <li>
+                  下記全てを一文字以上含む
+                  <ul class="list-disc list-inside ml-4">
+                    <li>半角英字(大文字・小文字両方)</li>
+                    <li>半角数字</li>
+                  </ul>
+                </li>
+              </ul>
             </div>
           </collapse-transition>
         </template>
@@ -78,7 +95,7 @@
         @parentEvent="registerUser"
         label="新規登録"
         type="button"
-        class="mt-8"
+        class="mt-8 block py-1"
       />
     </form>
   </div>
