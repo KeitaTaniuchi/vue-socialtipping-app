@@ -27,14 +27,14 @@
             入力されたメールアドレスが正しくありません
           </p>
         </div>
-        <p v-if="!emailAlreadyInUseDisplayDecision">
+        <p v-if="!emailAlreadyInUseErrorDisplayDecision">
           このメールアドレスは既に使用されています
         </p>
       </div>
 
       <FormInput
         v-model="password"
-        @input="passwordRegexpDecision"
+        @input="passwordRegexp"
         label="パスワード"
         :type="type"
         placeHolder="パスワードを入力してください"
@@ -60,8 +60,9 @@
                 "
               >
                 <li>12文字以上</li>
+                <li>ユーザー名・メールアドレスと異なる文字列</li>
                 <li>
-                  下記全てを一文字以上含む
+                  下記に示す「使用可能な文字列」を最低一文字ずつ含む
                   <ul class="list-disc list-inside ml-4">
                     <li>半角英字(大文字・小文字両方)</li>
                     <li>半角数字</li>
@@ -75,7 +76,13 @@
           <TogglePasswordDisplayButton @updateType="type = $event" />
         </template>
       </FormInput>
-      <div v-if="$v.password.$error" class="text-red-500 mt-3">
+      <div class="text-red-500 mt-3">
+        <div v-if="$v.password.$error">
+          <p v-if="!$v.password.required">パスワードを入力してください</p>
+          <p v-if="!$v.password.minLength">
+            パスワードは12文字以上入力してください
+          </p>
+        </div>
         <div v-if="password !== ''">
           <p v-if="password === userName">
             ユーザー名と同じ文字列が入力されています
@@ -83,13 +90,19 @@
           <p v-if="password === email">
             メールアドレスと同じ文字列が入力されています
           </p>
+          <p v-if="!unusableCharacterIncludesErrorDisplayDecision">
+            パスワードに使用できない文字が含まれています
+          </p>
+          <p
+            v-if="
+              requiredCharacterNotContainsErrorMessage &&
+              unusableCharacterIncludesErrorDisplayDecision
+            "
+          >
+            {{ requiredCharacterNotContainsErrorMessage }}
+          </p>
         </div>
-        <p v-if="!$v.password.required">パスワードを入力してください</p>
-        <p v-if="!$v.password.minLength">
-          パスワードは12文字以上入力してください
-        </p>
       </div>
-      <p>{{ passwordErrorMessage }}</p>
 
       <AccountRelatedButton
         @parentEvent="registerUser"
@@ -125,18 +138,32 @@ export default {
     };
   },
   computed: {
-    emailAlreadyInUseDisplayDecision() {
+    emailAlreadyInUseErrorDisplayDecision() {
       return this.$store.getters[
-        "RegisterUser/emailAlreadyInUseDisplayDecision"
+        "RegisterUser/emailAlreadyInUseErrorDisplayDecision"
       ];
     },
-    passwordErrorMessage() {
-      return this.$store.getters["PasswordRegexpDecision/errorMessage"];
+    unusableCharacterIncludesErrorDisplayDecision() {
+      return this.$store.getters[
+        "PasswordRegexp/unusableCharacterIncludesErrorDisplayDecision"
+      ];
+    },
+    requiredCharacterNotContainsErrorMessage() {
+      return this.$store.getters[
+        "PasswordRegexp/requiredCharacterNotContainsErrorMessage"
+      ];
     },
   },
   methods: {
-    passwordRegexpDecision(e) {
-      this.$store.commit("PasswordRegexpDecision/updateErrorMessage", e);
+    passwordRegexp(e) {
+      this.$store.commit(
+        "PasswordRegexp/updateUnusableCharacterIncludesErrorDisplayDecision",
+        e
+      );
+      this.$store.commit(
+        "PasswordRegexp/updateRequiredCharacterNotContainsErrorMessage",
+        e
+      );
     },
     registerUser() {
       this.$v.$touch();

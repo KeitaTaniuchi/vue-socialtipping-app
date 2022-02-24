@@ -3,25 +3,25 @@
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const state = {
-  emailAlreadyInUseDisplayDecision: true,
+  emailAlreadyInUseErrorDisplayDecision: true,
 };
 
 const getters = {
-  emailAlreadyInUseDisplayDecision: (state) => state.emailAlreadyInUseDisplayDecision,
+  emailAlreadyInUseErrorDisplayDecision: (state) => state.emailAlreadyInUseErrorDisplayDecision,
 };
 
 const mutations = {
-  resetEmailAlreadyInUseDisplayDecision(state) {
-    state.emailAlreadyInUseDisplayDecision = true;
+  resetEmailAlreadyInUseErrorDisplayDecision(state) {
+    state.emailAlreadyInUseErrorDisplayDecision = true;
   },
-  updateEmailAlreadyInUseDisplayDecision(state) {
-    state.emailAlreadyInUseDisplayDecision = false;
+  updateEmailAlreadyInUseErrorDisplayDecision(state) {
+    state.emailAlreadyInUseErrorDisplayDecision = false;
   },
 };
 
 const actions = {
   registerUser(context, { email, password }) {
-    context.commit("resetEmailAlreadyInUseDisplayDecision");
+    context.commit("resetEmailAlreadyInUseErrorDisplayDecision");
     createUserWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
         this.$router.push("/");
@@ -33,7 +33,7 @@ const actions = {
       .catch((error) => {
         console.log(error.code);
         if (error.code === "auth/email-already-in-use") {
-          context.commit("updateEmailAlreadyInUseDisplayDecision");
+          context.commit("updateEmailAlreadyInUseErrorDisplayDecision");
         }
       });
   },
