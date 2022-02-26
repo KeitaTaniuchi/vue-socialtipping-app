@@ -34,7 +34,6 @@
 
       <FormInput
         v-model="password"
-        @input="passwordRegexp"
         label="パスワード"
         :type="type"
         placeHolder="パスワードを入力してください"
@@ -83,24 +82,32 @@
             パスワードは12文字以上入力してください
           </p>
         </div>
-        <div v-if="password !== ''">
-          <p v-if="password === userName">
+        <div v-if="password">
+          <p v-if="!passwordWithUserNameNotMatchIsDecision">
             ユーザー名と同じ文字列が入力されています
           </p>
-          <p v-if="password === email">
+          <p v-if="!passwordWithEmailNotMatchIsDecision">
             メールアドレスと同じ文字列が入力されています
           </p>
           <p v-if="!unusableCharacterIncludesErrorDisplayDecision">
             パスワードに使用できない文字が含まれています
           </p>
-          <p
+          <div
             v-if="
-              requiredCharacterNotContainsErrorMessage &&
+              requiredCharacterNotContainsErrorMessageArray !== true &&
               unusableCharacterIncludesErrorDisplayDecision
             "
           >
-            {{ requiredCharacterNotContainsErrorMessage }}
-          </p>
+            以下の文字が含まれていません
+            <ul class="list-disc list-inside ml-4">
+              <li
+                v-for="requiredCharacterNotContainsErrorMessage of requiredCharacterNotContainsErrorMessageArray"
+                :key="requiredCharacterNotContainsErrorMessage"
+              >
+                {{ requiredCharacterNotContainsErrorMessage }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -118,6 +125,7 @@
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
+import PasswordDecision from "../definition/UserRegistrationView/password-decision";
 import { CollapseTransition } from "@ivanv/vue-collapse-transition";
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
@@ -143,31 +151,42 @@ export default {
         "RegisterUser/emailAlreadyInUseErrorDisplayDecision"
       ];
     },
-    unusableCharacterIncludesErrorDisplayDecision() {
-      return this.$store.getters[
-        "PasswordRegexp/unusableCharacterIncludesErrorDisplayDecision"
-      ];
+    passwordWithUserNameNotMatchIsDecision() {
+      return PasswordDecision.passwordWithUserNameNotMatchIsDecision(
+        this.userName,
+        this.password
+      );
     },
-    requiredCharacterNotContainsErrorMessage() {
-      return this.$store.getters[
-        "PasswordRegexp/requiredCharacterNotContainsErrorMessage"
-      ];
+    passwordWithEmailNotMatchIsDecision() {
+      return PasswordDecision.passwordWithUserNameNotMatchIsDecision(
+        this.email,
+        this.password
+      );
+    },
+    unusableCharacterIncludesErrorDisplayDecision() {
+      return PasswordDecision.unusableCharacterIncludesErrorDisplayDecision(
+        this.password
+      );
+    },
+    requiredCharacterNotContainsErrorMessageArray() {
+      return PasswordDecision.requiredCharacterNotContainsErrorMessageArray(
+        this.password
+      );
     },
   },
   methods: {
-    passwordRegexp(e) {
-      this.$store.commit(
-        "PasswordRegexp/updateUnusableCharacterIncludesErrorDisplayDecision",
-        e
-      );
-      this.$store.commit(
-        "PasswordRegexp/updateRequiredCharacterNotContainsErrorMessage",
-        e
-      );
-    },
     registerUser() {
+      const passwordDecisionArray = [
+        this.passwordWithUserNameNotMatchIsDecision,
+        this.passwordWithEmailNotMatchIsDecision,
+        this.unusableCharacterIncludesErrorDisplayDecision,
+        this.requiredCharacterNotContainsErrorMessageArray,
+      ];
       this.$v.$touch();
-      if (!this.$v.$invalid) {
+      if (
+        !this.$v.$invalid &&
+        passwordDecisionArray.every((value) => value === true)
+      ) {
         this.$store.dispatch("RegisterUser/registerUser", {
           email: this.email,
           password: this.password,

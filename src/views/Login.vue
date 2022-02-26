@@ -19,7 +19,11 @@
           class="mt-8"
         />
 
-        <AccountRelatedButton label="ログイン" type="button" class="mt-8" />
+        <AccountRelatedButton
+          label="ログイン"
+          type="button"
+          class="mt-8 block py-1"
+        />
 
         <div
           class="
