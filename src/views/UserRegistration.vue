@@ -46,30 +46,7 @@
             type="button"
             class="ml-2"
           />
-          <collapse-transition>
-            <div v-show="isOpen" class="space-y-2">
-              <ul
-                class="
-                  list-decimal list-inside
-                  my-4
-                  p-2
-                  border border-blue-500
-                  rounded
-                  space-y-2
-                "
-              >
-                <li>12文字以上</li>
-                <li>ユーザー名・メールアドレスと異なる文字列</li>
-                <li>
-                  下記に示す「使用可能な文字列」を最低一文字ずつ含む
-                  <ul class="list-disc list-inside ml-4">
-                    <li>半角英字(大文字・小文字両方)</li>
-                    <li>半角数字</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </collapse-transition>
+          <PasswordRequiredAccordion v-show="isOpen" class="space-y-2" />
         </template>
         <template v-slot:togglePasswordDisplayButton>
           <TogglePasswordDisplayButton @updateType="type = $event" />
@@ -118,23 +95,43 @@
         class="mt-8 block py-1"
       />
     </form>
+
+    <div
+      v-show="loadingAnimationDisplay"
+      class="
+        z-50
+        fixed
+        inset-0
+        w-full
+        h-full
+        bg-black bg-opacity-50
+        flex
+        items-center
+        justify-center
+      "
+    >
+      <LoadingAnimation />
+    </div>
   </div>
 </template>
 
 <script>
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
+import LoadingAnimation from "../components/LoadingAnimation.vue";
+import PasswordRequiredAccordion from "../components/PasswordRequiredAccordion.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
 import PasswordDecision from "../definition/UserRegistrationView/password-decision";
-import { CollapseTransition } from "@ivanv/vue-collapse-transition";
+
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   name: "UserRegistration",
   components: {
-    FormInput,
     AccountRelatedButton,
+    FormInput,
+    LoadingAnimation,
+    PasswordRequiredAccordion,
     TogglePasswordDisplayButton,
-    CollapseTransition,
   },
   data() {
     return {
@@ -172,6 +169,9 @@ export default {
       return PasswordDecision.requiredCharacterNotContainsErrorMessageArray(
         this.password
       );
+    },
+    loadingAnimationDisplay() {
+      return this.$store.getters["RegisterUser/loadingAnimationDisplay"];
     },
   },
   methods: {

@@ -4,26 +4,30 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const state = {
   emailAlreadyInUseErrorDisplayDecision: true,
+  loadingAnimationDisplay: false,
 };
 
 const getters = {
   emailAlreadyInUseErrorDisplayDecision: (state) => state.emailAlreadyInUseErrorDisplayDecision,
+  loadingAnimationDisplay: (state) => state.loadingAnimationDisplay,
 };
 
 const mutations = {
-  resetEmailAlreadyInUseErrorDisplayDecision(state) {
-    state.emailAlreadyInUseErrorDisplayDecision = true;
+  updateEmailAlreadyInUseErrorDisplayDecision(state, value) {
+    state.emailAlreadyInUseErrorDisplayDecision = value;
   },
-  updateEmailAlreadyInUseErrorDisplayDecision(state) {
-    state.emailAlreadyInUseErrorDisplayDecision = false;
+  updateLoadingAnimationDisplay(state, value) {
+    state.loadingAnimationDisplay = value;
   },
 };
 
 const actions = {
   registerUser(context, { email, password }) {
-    context.commit("resetEmailAlreadyInUseErrorDisplayDecision");
+    context.commit("updateEmailAlreadyInUseErrorDisplayDecision", true);
+    context.commit("updateLoadingAnimationDisplay", true);
     createUserWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
+        context.commit("updateLoadingAnimationDisplay", false);
         this.$router.push("/");
         const user = userCredential.user;
         user.updateProfile({
@@ -33,7 +37,8 @@ const actions = {
       .catch((error) => {
         console.log(error.code);
         if (error.code === "auth/email-already-in-use") {
-          context.commit("updateEmailAlreadyInUseErrorDisplayDecision");
+          context.commit("updateEmailAlreadyInUseErrorDisplayDecision", false);
+          context.commit("updateLoadingAnimationDisplay", false);
         }
       });
   },
