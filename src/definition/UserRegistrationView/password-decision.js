@@ -29,6 +29,7 @@ const requiredCharacterNotContainsErrorMessageArray = (password) => {
     errorMessageArray.push("半角数字");
   }
 
+  /* UserRegistration.vueでeveryメソッドを使ってパスワードの判定するので、問題がなければtrueをreturnしています */
   return !halfWidthAlphabetUpperCaseLettersReg || !halfWidthAlphabetLowerCaseLettersReg || !halfWidthNumberReg ? errorMessageArray : true;
 };
 

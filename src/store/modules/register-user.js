@@ -1,6 +1,7 @@
 "use strict";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import router from "@/router";
 
 const state = {
   emailAlreadyInUseErrorDisplayDecision: true,
@@ -28,7 +29,7 @@ const actions = {
     createUserWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
         context.commit("updateLoadingAnimationDisplay", false);
-        this.$router.push("/");
+        router.push({ path: "/" });
         const user = userCredential.user;
         user.updateProfile({
           displayName: this.userName,
