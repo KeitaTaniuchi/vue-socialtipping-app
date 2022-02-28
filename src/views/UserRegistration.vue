@@ -71,7 +71,7 @@
           </p>
           <div
             v-if="
-              requiredCharacterNotContainsErrorMessageArray !== true &&
+              requiredCharacterNotContainsErrorMessageArray.length &&
               unusableCharacterIncludesErrorDisplayDecision
             "
           >
@@ -180,18 +180,18 @@ export default {
         this.passwordWithUserNameNotMatchIsDecision,
         this.passwordWithEmailNotMatchIsDecision,
         this.unusableCharacterIncludesErrorDisplayDecision,
-        this.requiredCharacterNotContainsErrorMessageArray,
+        this.requiredCharacterNotContainsErrorMessageArray.every(
+          (value) => value === ""
+        ),
       ];
       this.$v.$touch();
-      if (
-        !this.$v.$invalid &&
-        passwordDecisionArray.every((value) => value === true)
-      ) {
-        this.$store.dispatch("RegisterUser/registerUser", {
-          email: this.email,
-          password: this.password,
-        });
+      if (this.$v.$invalid || !passwordDecisionArray.every((value) => value)) {
+        return;
       }
+      this.$store.dispatch("RegisterUser/registerUser", {
+        email: this.email,
+        password: this.password,
+      });
     },
   },
   validations: {

@@ -39,8 +39,8 @@ const actions = {
         console.log(error.code);
         if (error.code === "auth/email-already-in-use") {
           context.commit("updateEmailAlreadyInUseErrorDisplayDecision", false);
-          context.commit("updateLoadingAnimationDisplay", false);
         }
+        context.commit("updateLoadingAnimationDisplay", false);
       });
   },
 };
