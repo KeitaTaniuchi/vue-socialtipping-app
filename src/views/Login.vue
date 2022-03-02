@@ -4,7 +4,7 @@
     <div class="mt-8">
       <form class="w-10/12 mx-auto md:max-w-md">
         <FormInput
-          v-model="userEmail"
+          v-model="email"
           label="メールアドレス"
           type="email"
           placeHolder="メールアドレスを入力してください"
@@ -12,12 +12,16 @@
         />
 
         <FormInput
-          v-model="userPassword"
+          v-model="password"
           label="パスワード"
-          type="password"
+          :type="type"
           placeHolder="パスワードを入力してください"
           class="mt-8"
-        />
+        >
+          <template v-slot:togglePasswordDisplayButton>
+            <TogglePasswordDisplayButton @updateType="type = $event" />
+          </template>
+        </FormInput>
 
         <AccountRelatedButton
           label="ログイン"
@@ -45,13 +49,19 @@
 <script>
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
+import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
 export default {
   name: "Login",
-  components: { FormInput, AccountRelatedButton },
+  components: {
+    FormInput,
+    AccountRelatedButton,
+    TogglePasswordDisplayButton,
+  },
   data() {
     return {
-      userEmail: "",
-      userPassword: "",
+      email: "",
+      password: "",
+      type: "password",
     };
   },
 };
