@@ -22,12 +22,14 @@ const actions = {
     context.commit("updateLoadingAnimationDisplay", true);
     signInWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
+        context.commit("updateLoadingAnimationDisplay", false);
         const user = userCredential.user;
         console.log(user);
         router.push({ path: "/DashBoard" });
       })
       .catch((error) => {
         console.log(error.code);
+        context.commit("updateLoadingAnimationDisplay", false);
       });
   },
 };

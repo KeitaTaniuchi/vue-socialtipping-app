@@ -52,6 +52,23 @@
           <router-link to="/UserRegistration">新規登録はこちらから</router-link>
         </div>
       </form>
+
+      <div
+        v-show="loadingAnimationDisplay"
+        class="
+          z-50
+          fixed
+          inset-0
+          w-full
+          h-full
+          bg-black bg-opacity-50
+          flex
+          items-center
+          justify-center
+        "
+      >
+        <LoadingAnimation />
+      </div>
     </div>
   </div>
 </template>
@@ -59,12 +76,14 @@
 <script>
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
+import LoadingAnimation from "../components/LoadingAnimation.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
 import { required, email } from "vuelidate/lib/validators";
 export default {
   name: "Login",
   components: {
     FormInput,
+    LoadingAnimation,
     AccountRelatedButton,
     TogglePasswordDisplayButton,
   },
@@ -74,6 +93,11 @@ export default {
       password: "",
       type: "password",
     };
+  },
+  computed: {
+    loadingAnimationDisplay() {
+      return this.$store.getters["Login/loadingAnimationDisplay"];
+    },
   },
   methods: {
     login() {

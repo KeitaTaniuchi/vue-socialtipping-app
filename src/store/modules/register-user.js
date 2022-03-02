@@ -29,11 +29,11 @@ const actions = {
     createUserWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
         context.commit("updateLoadingAnimationDisplay", false);
-        router.push({ path: "/" });
         const user = userCredential.user;
         user.updateProfile({
           displayName: userName,
         });
+        router.push({ path: "/" });
       })
       .catch((error) => {
         console.log(error.code);
