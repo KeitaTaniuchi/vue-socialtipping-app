@@ -17,7 +17,20 @@ const mutations = {
   },
 };
 
-const actions = {};
+const actions = {
+  login(context, { email, password }) {
+    context.commit("updateLoadingAnimationDisplay", true);
+    signInWithEmailAndPassword(getAuth(), email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        router.push({ path: "/DashBoard" });
+      })
+      .catch((error) => {
+        console.log(error.code);
+      });
+  },
+};
 
 export default {
   namespaced: true,

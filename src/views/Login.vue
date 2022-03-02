@@ -78,6 +78,13 @@ export default {
   methods: {
     login() {
       this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
+      this.$store.dispatch("Login/login", {
+        email: this.email,
+        password: this.password,
+      });
     },
   },
   validations: {
