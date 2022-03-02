@@ -23,7 +23,7 @@ const mutations = {
 };
 
 const actions = {
-  registerUser(context, { email, password }) {
+  registerUser(context, { userName, email, password }) {
     context.commit("updateEmailAlreadyInUseErrorDisplayDecision", true);
     context.commit("updateLoadingAnimationDisplay", true);
     createUserWithEmailAndPassword(getAuth(), email, password)
@@ -32,7 +32,7 @@ const actions = {
         router.push({ path: "/" });
         const user = userCredential.user;
         user.updateProfile({
-          displayName: this.userName,
+          displayName: userName,
         });
       })
       .catch((error) => {

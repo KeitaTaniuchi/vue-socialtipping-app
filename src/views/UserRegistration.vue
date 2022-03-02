@@ -189,6 +189,7 @@ export default {
         return;
       }
       this.$store.dispatch("RegisterUser/registerUser", {
+        userName: this.userName,
         email: this.email,
         password: this.password,
       });
