@@ -28,11 +28,11 @@ const actions = {
     context.commit("updateLoadingAnimationDisplay", true);
     createUserWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
-        context.commit("updateLoadingAnimationDisplay", false);
         const user = userCredential.user;
         user.updateProfile({
           displayName: userName,
         });
+        context.commit("updateLoadingAnimationDisplay", false);
         router.push({ path: "/" });
       })
       .catch((error) => {
