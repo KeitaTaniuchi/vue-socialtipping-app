@@ -122,7 +122,6 @@ import LoadingAnimation from "../components/LoadingAnimation.vue";
 import PasswordRequiredAccordion from "../components/PasswordRequiredAccordion.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
 import PasswordDecision from "../definition/UserRegistrationView/password-decision";
-
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   name: "UserRegistration",

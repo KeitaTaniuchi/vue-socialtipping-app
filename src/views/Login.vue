@@ -10,6 +10,12 @@
           placeHolder="メールアドレスを入力してください"
           class="mt-8"
         />
+        <div v-if="$v.email.$error" class="text-red-500 mt-3">
+          <p v-if="!$v.email.required">メールアドレスを入力してください</p>
+          <p v-if="!$v.email.email">
+            入力されたメールアドレスが正しくありません
+          </p>
+        </div>
 
         <FormInput
           v-model="password"
@@ -22,8 +28,12 @@
             <TogglePasswordDisplayButton @updateType="type = $event" />
           </template>
         </FormInput>
+        <div v-if="$v.password.$error" class="text-red-500 mt-3">
+          <p v-if="!$v.password.required">パスワードを入力してください</p>
+        </div>
 
         <AccountRelatedButton
+          @parentEvent="login"
           label="ログイン"
           type="button"
           class="mt-8 block py-1"
@@ -50,6 +60,7 @@
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
+import { required, email } from "vuelidate/lib/validators";
 export default {
   name: "Login",
   components: {
@@ -63,6 +74,15 @@ export default {
       password: "",
       type: "password",
     };
+  },
+  methods: {
+    login() {
+      this.$v.$touch();
+    },
+  },
+  validations: {
+    email: { required, email },
+    password: { required },
   },
 };
 </script>
