@@ -35,7 +35,7 @@ const actions = {
     signInWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
+        console.log(user.displayName);
         context.commit("updateLoadingAnimationDisplay", false);
         router.push({ path: "/DashBoard" });
       })

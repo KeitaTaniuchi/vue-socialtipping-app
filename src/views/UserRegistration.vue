@@ -27,7 +27,7 @@
             入力されたメールアドレスが正しくありません
           </p>
         </div>
-        <p v-if="!emailAlreadyInUseErrorDisplayDecision">
+        <p v-if="emailAlreadyInUseErrorDisplayDecision">
           このメールアドレスは既に使用されています
         </p>
       </div>
