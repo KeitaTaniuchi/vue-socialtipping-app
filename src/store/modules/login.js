@@ -33,9 +33,7 @@ const actions = {
     context.commit("updateUserNotFoundErrorDisplayDecision", false);
     context.commit("updateWrongPasswordErrorDisplayDecision", false);
     signInWithEmailAndPassword(getAuth(), email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user.displayName);
+      .then(() => {
         context.commit("updateLoadingAnimationDisplay", false);
         router.push({ path: "/DashBoard" });
       })
