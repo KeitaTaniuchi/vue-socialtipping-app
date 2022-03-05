@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto">
     <div class="flex w-6/12 mb-20 justify-between mx-auto">
-      <p>ようこそ{{ test }}</p>
+      <p>ようこそ{{ currentUserName }}さん</p>
       <p>残高:400</p>
     </div>
 
@@ -17,8 +17,10 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.test = this.$store.getters["Login/userNotFoundErrorDisplayDecision"];
+  computed: {
+    currentUserName() {
+      return this.$store.getters["Login/currentUserName"];
+    },
   },
 };
 </script>
