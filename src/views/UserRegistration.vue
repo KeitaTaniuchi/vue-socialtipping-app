@@ -27,7 +27,7 @@
             入力されたメールアドレスが正しくありません
           </p>
         </div>
-        <p v-if="!emailAlreadyInUseErrorDisplayDecision">
+        <p v-if="emailAlreadyInUseErrorDisplayDecision">
           このメールアドレスは既に使用されています
         </p>
       </div>
@@ -122,7 +122,6 @@ import LoadingAnimation from "../components/LoadingAnimation.vue";
 import PasswordRequiredAccordion from "../components/PasswordRequiredAccordion.vue";
 import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
 import PasswordDecision from "../definition/UserRegistrationView/password-decision";
-
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
   name: "UserRegistration",
@@ -189,6 +188,7 @@ export default {
         return;
       }
       this.$store.dispatch("RegisterUser/registerUser", {
+        userName: this.userName,
         email: this.email,
         password: this.password,
       });

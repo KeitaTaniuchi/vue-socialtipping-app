@@ -1,10 +1,10 @@
 "use strict";
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import router from "@/router";
 
 const state = {
-  emailAlreadyInUseErrorDisplayDecision: true,
+  emailAlreadyInUseErrorDisplayDecision: false,
   loadingAnimationDisplay: false,
 };
 
@@ -23,22 +23,23 @@ const mutations = {
 };
 
 const actions = {
-  registerUser(context, { email, password }) {
-    context.commit("updateEmailAlreadyInUseErrorDisplayDecision", true);
+  registerUser(context, { userName, email, password }) {
+    context.commit("updateEmailAlreadyInUseErrorDisplayDecision", false);
     context.commit("updateLoadingAnimationDisplay", true);
     createUserWithEmailAndPassword(getAuth(), email, password)
-      .then((userCredential) => {
+      .then(() => {
+        updateProfile(getAuth().currentUser, {
+          displayName: userName,
+        });
+      })
+      .then(() => {
         context.commit("updateLoadingAnimationDisplay", false);
         router.push({ path: "/" });
-        const user = userCredential.user;
-        user.updateProfile({
-          displayName: this.userName,
-        });
       })
       .catch((error) => {
         console.log(error.code);
         if (error.code === "auth/email-already-in-use") {
-          context.commit("updateEmailAlreadyInUseErrorDisplayDecision", false);
+          context.commit("updateEmailAlreadyInUseErrorDisplayDecision", true);
         }
         context.commit("updateLoadingAnimationDisplay", false);
       });

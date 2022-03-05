@@ -14,6 +14,11 @@ const routes = [
     name: "UserRegistration",
     component: () => import("../views/UserRegistration.vue"),
   },
+  {
+    path: "/DashBoard",
+    name: "DashBoard",
+    component: () => import("../views/DashBoard.vue"),
+  },
 ];
 
 const router = new VueRouter({
