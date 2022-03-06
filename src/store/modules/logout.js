@@ -3,20 +3,27 @@
 import { getAuth, signOut } from "firebase/auth";
 import router from "@/router";
 
-const state = {};
+const state = { loadingAnimationDisplay: false };
 
-const getters = {};
+const getters = { loadingAnimationDisplay: (state) => state.loadingAnimationDisplay };
 
-const mutations = {};
+const mutations = {
+  updateLoadingAnimationDisplay(state, value) {
+    state.loadingAnimationDisplay = value;
+  },
+};
 
 const actions = {
-  logout() {
+  logout(context) {
+    context.commit("updateLoadingAnimationDisplay", true);
     signOut(getAuth())
       .then(() => {
+        context.commit("updateLoadingAnimationDisplay", false);
         router.push({ path: "/" });
       })
       .catch((error) => {
         console.log(error);
+        context.commit("updateLoadingAnimationDisplay", false);
       });
   },
 };
