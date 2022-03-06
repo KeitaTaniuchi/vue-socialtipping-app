@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <div class="flex w-6/12 mb-20 justify-between mx-auto">
+    <div class="flex w-8/12 mb-20 justify-between mx-auto">
       <p>ようこそ{{ currentUserName }}さん</p>
       <div>
         <p>残高：400</p>
