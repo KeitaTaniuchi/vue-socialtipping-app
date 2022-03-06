@@ -32,6 +32,21 @@
     >
       <LoadingAnimation />
     </div>
+
+    <modal
+      name="hello-world"
+      :resizable="false"
+      :draggable="false"
+      :clickToClose="false"
+      class="text-center"
+    >
+      <h1 class="mt-8 text-red-500 text-4xl">警告</h1>
+      <div class="mt-8 text-red-500 text-2xl">
+        <p>あなたはログインしていません</p>
+        <p>先にログインしてください</p>
+      </div>
+      <p class="mt-8">5秒後に自動的にログイン画面に遷移します</p>
+    </modal>
   </div>
 </template>
 
@@ -49,11 +64,13 @@ export default {
     window.onload = () => {
       onAuthStateChanged(getAuth(), (user) => {
         if (!user) {
-          this.$router.push({ path: "/" });
+          this.$modal.show("hello-world");
+          /* this.$router.push({ path: "/" }); */
         }
       });
     };
   },
+  beforeUpdate() {},
   computed: {
     currentUserName() {
       return this.$store.getters["Login/currentUserName"];
