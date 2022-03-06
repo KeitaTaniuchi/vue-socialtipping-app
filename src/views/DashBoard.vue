@@ -31,5 +31,10 @@ export default {
       return this.$store.getters["Login/currentUserName"];
     },
   },
+  methods: {
+    logout() {
+      this.$store.dispatch("Logout/logout");
+    },
+  },
 };
 </script>
