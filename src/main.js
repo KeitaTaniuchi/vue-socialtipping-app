@@ -18,6 +18,9 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate);
 
+import VModal from "vue-js-modal";
+Vue.use(VModal);
+
 Vue.config.productionTip = false;
 
 new Vue({
