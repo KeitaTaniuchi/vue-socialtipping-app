@@ -34,7 +34,8 @@
     </div>
 
     <modal
-      name="hello-world"
+      name="notLoginWarning"
+      @before-open="threeSecondsAfterGoLoginPage"
       :resizable="false"
       :draggable="false"
       :clickToClose="false"
@@ -45,7 +46,7 @@
         <p>あなたはログインしていません</p>
         <p>先にログインしてください</p>
       </div>
-      <p class="mt-8">5秒後に自動的にログイン画面に遷移します</p>
+      <p class="mt-8">3秒後に自動的にログイン画面に遷移します</p>
     </modal>
   </div>
 </template>
@@ -64,8 +65,7 @@ export default {
     window.onload = () => {
       onAuthStateChanged(getAuth(), (user) => {
         if (!user) {
-          this.$modal.show("hello-world");
-          /* this.$router.push({ path: "/" }); */
+          this.$modal.show("notLoginWarning");
         }
       });
     };
@@ -82,6 +82,12 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("Logout/logout");
+    },
+    threeSecondsAfterGoLoginPage() {
+      setTimeout(this.goLoginPage, 3000);
+    },
+    goLoginPage() {
+      this.$router.push({ path: "/" });
     },
   },
 };
