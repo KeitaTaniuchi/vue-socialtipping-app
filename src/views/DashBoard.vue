@@ -38,11 +38,21 @@
 <script>
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default {
   name: "DashBoard",
   components: { AccountRelatedButton, LoadingAnimation },
   data() {
     return {};
+  },
+  mounted() {
+    window.onload = () => {
+      onAuthStateChanged(getAuth(), (user) => {
+        if (!user) {
+          this.$router.push({ path: "/" });
+        }
+      });
+    };
   },
   computed: {
     currentUserName() {
