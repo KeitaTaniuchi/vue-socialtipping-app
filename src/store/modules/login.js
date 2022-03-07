@@ -7,12 +7,14 @@ const state = {
   userNotFoundErrorDisplayDecision: false,
   wrongPasswordErrorDisplayDecision: false,
   loadingAnimationDisplay: false,
+  currentUserName: "",
 };
 
 const getters = {
   userNotFoundErrorDisplayDecision: (state) => state.userNotFoundErrorDisplayDecision,
   wrongPasswordErrorDisplayDecision: (state) => state.wrongPasswordErrorDisplayDecision,
   loadingAnimationDisplay: (state) => state.loadingAnimationDisplay,
+  currentUserName: (state) => state.currentUserName,
 };
 
 const mutations = {
@@ -25,6 +27,9 @@ const mutations = {
   updateLoadingAnimationDisplay(state, value) {
     state.loadingAnimationDisplay = value;
   },
+  updateCurrentUserName(state, value) {
+    state.currentUserName = value;
+  },
 };
 
 const actions = {
@@ -34,8 +39,7 @@ const actions = {
     context.commit("updateWrongPasswordErrorDisplayDecision", false);
     signInWithEmailAndPassword(getAuth(), email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user.displayName);
+        context.commit("updateCurrentUserName", userCredential.user.displayName);
         context.commit("updateLoadingAnimationDisplay", false);
         router.push({ path: "/DashBoard" });
       })
