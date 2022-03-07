@@ -1,6 +1,7 @@
 "use strict";
 
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 import router from "@/router";
 
 const state = {
@@ -33,6 +34,9 @@ const actions = {
         });
       })
       .then(() => {
+        context.dispatch("addUserNameToFireStore", userName);
+      })
+      .then(() => {
         context.commit("updateLoadingAnimationDisplay", false);
         router.push({ path: "/" });
       })
@@ -43,6 +47,16 @@ const actions = {
         }
         context.commit("updateLoadingAnimationDisplay", false);
       });
+  },
+  addUserNameToFireStore(context, userName) {
+    try {
+      addDoc(collection(getFirestore(), "users"), {
+        user_name: userName,
+        point: 0,
+      });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   },
 };
 
