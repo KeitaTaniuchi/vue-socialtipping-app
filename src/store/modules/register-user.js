@@ -35,8 +35,7 @@ const actions = {
     context.commit("updateEmailAlreadyInUseErrorDisplayDecision", false);
     try {
       await context.dispatch("confirmIfUserNameNotDuplicate", userName);
-      await context.dispatch("createUser", { email, password });
-      await context.dispatch("updateDisplayName", userName);
+      await context.dispatch("createUser", { userName, email, password });
       await context.dispatch("addUserNameToFireStore", userName);
       await router.push({ path: "/" });
     } catch (error) {
@@ -46,8 +45,8 @@ const actions = {
     }
   },
   async confirmIfUserNameNotDuplicate(context, userName) {
-    const userNameArr = [];
     try {
+      const userNameArr = [];
       const q = collection(getFirestore(), "users");
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
@@ -55,17 +54,22 @@ const actions = {
       });
       if (userNameArr.some((value) => value === userName)) {
         context.commit("updateUserNameDuplicateErrorDisplayDecision", true);
-        throw new Error();
+        throw new Error("user-name-already-in-use");
       }
     } catch (error) {
+      console.error(error);
       throw new Error("confirmIfUserNameNotDuplicateメソッドでエラーが発生しました");
     }
   },
-  async createUser(context, { email, password }) {
-    /* createUserメソッドを実行するとコンソール上でPOST...400エラーが発生します(ユーザー登録自体はできます) */
+  async createUser(context, { userName, email, password }) {
     try {
+      /* createUserWithEmailAndPasswordメソッドを実行するとコンソール上で
+      「POST https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDLGC7AkJBkg6Z1eBaZ-iFEBGdmvFINkgg 400」
+      エラーが発生します(ユーザー登録自体は可能なため保留にします) */
       await createUserWithEmailAndPassword(getAuth(), email, password);
-      await console.log("createUserまでOK");
+      await updateProfile(getAuth().currentUser, {
+        displayName: userName,
+      });
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         context.commit("updateEmailAlreadyInUseErrorDisplayDecision", true);
@@ -73,20 +77,9 @@ const actions = {
       throw new Error("createUserメソッドでエラーが発生しました");
     }
   },
-  /* updateDisplayNameメソッドを実行するとエラーが発生します(currentUserメソッドがうまく機能していない?) */
-  async updateDisplayName(userName) {
-    try {
-      await updateProfile(getAuth().currentUser, {
-        displayName: userName,
-      });
-      await console.log("updateDisplayNameまでOK");
-    } catch (error) {
-      throw new Error("updateDisplayNameメソッドでエラーが発生しました");
-    }
-  },
   async addUserNameToFireStore(context, userName) {
     try {
-      await addDoc(collection(getFirestore(), "users"), {
+      addDoc(collection(getFirestore(), "users"), {
         user_name: userName,
         point: 0,
       });
