@@ -1,6 +1,6 @@
 <template>
-  <div class="container mx-auto">
-    <div class="flex w-8/12 mb-20 justify-between mx-auto">
+  <div class="container mx-auto w-8/12">
+    <div class="flex mb-20 justify-between mx-auto">
       <p>ようこそ{{ currentUserName }}さん</p>
       <div>
         <p>残高：400</p>
@@ -15,6 +15,21 @@
 
     <p class="mb-20 text-center text-4xl">ユーザー一覧</p>
     <div class="mt-8"></div>
+
+    <thead>
+      <tr>
+        <th>ユーザー名</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(userName, index) in userNames" :key="index">
+        <td>{{ userName }}</td>
+        <td>
+          <button>walletを見る</button>
+        </td>
+        <td><button>送る</button></td>
+      </tr>
+    </tbody>
 
     <div
       v-show="loadingAnimationDisplay"
@@ -63,6 +78,7 @@ export default {
   },
   mounted() {
     window.onload = () => {
+      this.$store.dispatch("UserInformation/createUserNameArr");
       onAuthStateChanged(getAuth(), (user) => {
         if (!user) {
           this.$modal.show("notLoginWarning");
@@ -70,10 +86,12 @@ export default {
       });
     };
   },
-  beforeUpdate() {},
   computed: {
     currentUserName() {
       return this.$store.getters["Login/currentUserName"];
+    },
+    userNames() {
+      return this.$store.getters["UserInformation/userNameArr"];
     },
     loadingAnimationDisplay() {
       return this.$store.getters["Logout/loadingAnimationDisplay"];
