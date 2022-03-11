@@ -1,12 +1,32 @@
 "use strict";
 
-const state = {};
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
-const getters = {};
+const state = {
+  userNameArr: [],
+};
 
-const mutations = {};
+const getters = {
+  userNameArr: (state) => state.userNameArr,
+};
 
-const actions = {};
+const mutations = {
+  updatedUserNameArr(state, value) {
+    state.userNameArr = value;
+  },
+};
+
+const actions = {
+  async createUserNameArr(context) {
+    const userNameArr = [];
+    const q = collection(getFirestore(), "users");
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      userNameArr.push(doc.data().user_name);
+    });
+    context.commit("updatedUserNameArr", userNameArr);
+  },
+};
 
 export default {
   namespaced: true,
