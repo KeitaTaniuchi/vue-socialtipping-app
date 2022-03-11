@@ -16,20 +16,34 @@
     <p class="mb-20 text-center text-4xl">ユーザー一覧</p>
     <div class="mt-8"></div>
 
-    <thead>
-      <tr>
-        <th>ユーザー名</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(userName, index) in userNames" :key="index">
-        <td>{{ userName }}</td>
-        <td>
-          <button>walletを見る</button>
-        </td>
-        <td><button>送る</button></td>
-      </tr>
-    </tbody>
+    <table>
+      <thead>
+        <tr>
+          <th>ユーザー名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(userName, index) in userNames" :key="index">
+          <td class="w-3/5">{{ userName }}</td>
+          <td class="w-1/5 text-right">
+            <WalletRelatedButton
+              @parentEvent="confirmWallet"
+              label="walletを見る"
+              type="button"
+              class="py-1"
+            />
+          </td>
+          <td class="w-1/5 text-center">
+            <WalletRelatedButton
+              @parentEvent="confirmWallet"
+              label="送る"
+              type="button"
+              class="py-1"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <div
       v-show="loadingAnimationDisplay"
@@ -69,10 +83,11 @@
 <script>
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
+import WalletRelatedButton from "../components/WalletRelatedButton.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default {
   name: "DashBoard",
-  components: { AccountRelatedButton, LoadingAnimation },
+  components: { AccountRelatedButton, LoadingAnimation, WalletRelatedButton },
   data() {
     return {};
   },
@@ -106,6 +121,9 @@ export default {
     },
     goLoginPage() {
       this.$router.push({ path: "/" });
+    },
+    confirmWallet() {
+      console.log("walletを見る");
     },
   },
 };
