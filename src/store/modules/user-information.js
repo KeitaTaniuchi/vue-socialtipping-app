@@ -3,28 +3,28 @@
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const state = {
-  userNameArr: [],
+  userInformationArr: [],
 };
 
 const getters = {
-  userNameArr: (state) => state.userNameArr,
+  userInformationArr: (state) => state.userInformationArr,
 };
 
 const mutations = {
-  updatedUserNameArr(state, value) {
-    state.userNameArr = value;
+  updatedUserInformationArr(state, value) {
+    state.userInformationArr = value;
   },
 };
 
 const actions = {
-  async createUserNameArr(context) {
-    const userNameArr = [];
+  async createUserInformationArr(context) {
+    const userInformationArr = [];
     const q = collection(getFirestore(), "users");
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      userNameArr.push(doc.data().user_name);
+      userInformationArr.push(doc.data());
     });
-    context.commit("updatedUserNameArr", userNameArr);
+    context.commit("updatedUserInformationArr", userInformationArr);
   },
 };
 

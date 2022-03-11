@@ -23,8 +23,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(userName, index) in userNames" :key="index">
-          <td class="w-3/5">{{ userName }}</td>
+        <tr v-for="(userInformation, index) in userInformationArr" :key="index">
+          <td class="w-3/5">{{ userInformation.user_name }}</td>
           <td class="w-1/5 text-right">
             <WalletRelatedButton
               @parentEvent="confirmWallet"
@@ -93,20 +93,21 @@ export default {
   },
   mounted() {
     window.onload = () => {
-      this.$store.dispatch("UserInformation/createUserNameArr");
       onAuthStateChanged(getAuth(), (user) => {
+        console.log(user);
         if (!user) {
           this.$modal.show("notLoginWarning");
         }
       });
     };
+    this.$store.dispatch("UserInformation/createUserInformationArr");
   },
   computed: {
     currentUserName() {
       return this.$store.getters["Login/currentUserName"];
     },
-    userNames() {
-      return this.$store.getters["UserInformation/userNameArr"];
+    userInformationArr() {
+      return this.$store.getters["UserInformation/userInformationArr"];
     },
     loadingAnimationDisplay() {
       return this.$store.getters["Logout/loadingAnimationDisplay"];
