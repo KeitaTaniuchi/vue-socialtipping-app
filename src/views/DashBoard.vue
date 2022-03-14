@@ -1,9 +1,12 @@
 <template>
   <div class="container mx-auto w-8/12">
     <div class="flex mb-20 justify-between mx-auto">
-      <p>ようこそ{{ currentUserName }}さん</p>
+      <p>ようこそ{{ currentUserInformationObj.user_name }}さん</p>
       <div>
-        <p>残高：400</p>
+        <p>
+          残高：
+          {{ currentUserInformationObj.point }}
+        </p>
         <AccountRelatedButton
           @parentEvent="logout"
           label="ログアウト"
@@ -35,7 +38,7 @@
           </td>
           <td class="w-1/5 text-center">
             <WalletRelatedButton
-              @parentEvent="confirmWallet"
+              @parentEvent="sendWallet"
               label="送る"
               type="button"
               class="py-1"
@@ -92,22 +95,24 @@ export default {
     return {};
   },
   mounted() {
-    window.onload = () => {
-      onAuthStateChanged(getAuth(), (user) => {
-        console.log(user);
-        if (!user) {
-          this.$modal.show("notLoginWarning");
-        }
-      });
-    };
-    this.$store.dispatch("UserInformation/createUserInformationArr");
+    onAuthStateChanged(getAuth(), (user) => {
+      if (!user) {
+        this.$modal.show("notLoginWarning");
+      } else {
+        const currentUserName = user.displayName;
+        this.$store.dispatch(
+          "UserInformation/createUserInformationArr",
+          currentUserName
+        );
+      }
+    });
   },
   computed: {
-    currentUserName() {
-      return this.$store.getters["Login/currentUserName"];
-    },
     userInformationArr() {
       return this.$store.getters["UserInformation/userInformationArr"];
+    },
+    currentUserInformationObj() {
+      return this.$store.getters["UserInformation/currentUserInformationObj"];
     },
     loadingAnimationDisplay() {
       return this.$store.getters["Logout/loadingAnimationDisplay"];
@@ -125,6 +130,9 @@ export default {
     },
     confirmWallet() {
       console.log("walletを見る");
+    },
+    sendWallet() {
+      console.log("walletを送る");
     },
   },
 };
