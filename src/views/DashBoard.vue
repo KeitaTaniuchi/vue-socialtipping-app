@@ -19,7 +19,7 @@
     <p class="mb-20 text-center text-4xl">ユーザー一覧</p>
     <div class="mt-8"></div>
 
-    <table>
+    <table class="mx-auto">
       <thead>
         <tr>
           <th>ユーザー名</th>
@@ -30,7 +30,7 @@
           <td class="w-3/5">{{ userInformation.user_name }}</td>
           <td class="w-1/5 text-right">
             <WalletRelatedButton
-              @parentEvent="confirmWallet"
+              @parentEvent="confirmWallet(userInformation)"
               label="walletを見る"
               type="button"
               class="py-1"
@@ -65,6 +65,7 @@
       <LoadingAnimation />
     </div>
 
+    <ConfirmWalletModal />
     <NotLoginWarningModal />
   </div>
 </template>
@@ -73,7 +74,8 @@
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 import WalletRelatedButton from "../components/WalletRelatedButton.vue";
-import NotLoginWarningModal from "../components/Modal/NotLoginWarning.vue";
+import ConfirmWalletModal from "../components/Modal/ConfirmWalletModal.vue";
+import NotLoginWarningModal from "../components/Modal/NotLoginWarningModal.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default {
   name: "DashBoard",
@@ -81,6 +83,7 @@ export default {
     AccountRelatedButton,
     LoadingAnimation,
     WalletRelatedButton,
+    ConfirmWalletModal,
     NotLoginWarningModal,
   },
   data() {
@@ -114,8 +117,12 @@ export default {
     logout() {
       this.$store.dispatch("Logout/logout");
     },
-    confirmWallet() {
-      console.log("walletを見る");
+    confirmWallet(userInformation) {
+      this.$store.commit(
+        "UserInformation/updateSelectUserInformationObj",
+        userInformation
+      );
+      this.$modal.show("confirmWallet");
     },
     sendWallet() {
       console.log("walletを送る");

@@ -3,9 +3,8 @@
     name="notLoginWarning"
     @before-open="threeSecondsAfterGoLoginPage"
     :resizable="false"
+    :adaptive="true"
     :draggable="false"
-    :width="auto"
-    :height="auto"
     :clickToClose="false"
     class="text-center"
   >

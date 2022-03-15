@@ -5,11 +5,13 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 const state = {
   userInformationArr: [],
   currentUserInformationObj: "",
+  selectUserInformationObj: "",
 };
 
 const getters = {
   userInformationArr: (state) => state.userInformationArr,
   currentUserInformationObj: (state) => state.currentUserInformationObj,
+  selectUserInformationObj: (state) => state.selectUserInformationObj,
 };
 
 const mutations = {
@@ -22,6 +24,9 @@ const mutations = {
         state.currentUserInformationObj = object;
       }
     });
+  },
+  updateSelectUserInformationObj(state, value) {
+    state.selectUserInformationObj = value;
   },
 };
 
