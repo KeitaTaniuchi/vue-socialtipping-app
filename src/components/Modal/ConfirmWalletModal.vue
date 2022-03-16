@@ -8,9 +8,9 @@
     :height="200"
     class="text-center"
   >
-    <div class="pt-10 text-2xl">
+    <div class="mt-8 text-2xl">
       <p>{{ selectUserInformationObj.user_name }}さんのポイント残高</p>
-      <p class="pt-5">{{ selectUserInformationObj.point }}</p>
+      <p class="mt-5">{{ selectUserInformationObj.point }}</p>
     </div>
   </modal>
 </template>

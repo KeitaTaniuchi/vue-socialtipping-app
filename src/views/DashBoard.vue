@@ -38,7 +38,7 @@
           </td>
           <td class="w-1/5 text-center">
             <WalletRelatedButton
-              @parentEvent="sendWallet"
+              @parentEvent="sendWalletModalOpen"
               label="送る"
               type="button"
               class="py-1"
@@ -67,6 +67,7 @@
 
     <ConfirmWalletModal />
     <NotLoginWarningModal />
+    <SendWalletModal />
   </div>
 </template>
 
@@ -76,6 +77,7 @@ import LoadingAnimation from "../components/LoadingAnimation.vue";
 import WalletRelatedButton from "../components/Button/WalletRelatedButton.vue";
 import ConfirmWalletModal from "../components/Modal/ConfirmWalletModal.vue";
 import NotLoginWarningModal from "../components/Modal/NotLoginWarningModal.vue";
+import SendWalletModal from "../components/Modal/SendWalletModal.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default {
   name: "DashBoard",
@@ -85,6 +87,7 @@ export default {
     WalletRelatedButton,
     ConfirmWalletModal,
     NotLoginWarningModal,
+    SendWalletModal,
   },
   data() {
     return {};
@@ -124,8 +127,8 @@ export default {
       );
       this.$modal.show("confirmWallet");
     },
-    sendWallet() {
-      console.log("walletを送る");
+    sendWalletModalOpen() {
+      this.$modal.show("sendWallet");
     },
   },
 };
