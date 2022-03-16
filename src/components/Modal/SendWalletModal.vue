@@ -9,7 +9,7 @@
     class="text-center"
   >
     <div class="mt-8 text-2xl">
-      <p>あなたの残高：</p>
+      <p>あなたの残高：{{ currentUserInformationObj.point }}</p>
       <p class="mt-4">送る金額</p>
       <input
         v-model="sendPointQuantity"
@@ -43,6 +43,11 @@ export default {
     return {
       sendPointQuantity: "",
     };
+  },
+  computed: {
+    currentUserInformationObj() {
+      return this.$store.getters["UserInformation/currentUserInformationObj"];
+    },
   },
   methods: {
     sendWallet() {
