@@ -71,9 +71,9 @@
 </template>
 
 <script>
-import AccountRelatedButton from "../components/AccountRelatedButton.vue";
+import AccountRelatedButton from "../components/Button/AccountRelatedButton.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
-import WalletRelatedButton from "../components/WalletRelatedButton.vue";
+import WalletRelatedButton from "../components/Button/WalletRelatedButton.vue";
 import ConfirmWalletModal from "../components/Modal/ConfirmWalletModal.vue";
 import NotLoginWarningModal from "../components/Modal/NotLoginWarningModal.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
