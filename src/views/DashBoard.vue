@@ -1,9 +1,12 @@
 <template>
-  <div class="container mx-auto">
-    <div class="flex w-8/12 mb-20 justify-between mx-auto">
-      <p>ようこそ{{ currentUserName }}さん</p>
+  <div class="container mx-auto w-8/12">
+    <div class="flex mb-20 justify-between mx-auto">
+      <p>ようこそ{{ currentUserInformationObj.user_name }}さん</p>
       <div>
-        <p>残高：400</p>
+        <p>
+          残高：
+          {{ currentUserInformationObj.point }}
+        </p>
         <AccountRelatedButton
           @parentEvent="logout"
           label="ログアウト"
@@ -15,6 +18,35 @@
 
     <p class="mb-20 text-center text-4xl">ユーザー一覧</p>
     <div class="mt-8"></div>
+
+    <table class="mx-auto">
+      <thead>
+        <tr>
+          <th>ユーザー名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(userInformation, index) in userInformationArr" :key="index">
+          <td class="w-3/5">{{ userInformation.user_name }}</td>
+          <td class="w-1/5 text-right">
+            <WalletRelatedButton
+              @parentEvent="confirmWallet(userInformation)"
+              label="walletを見る"
+              type="button"
+              class="py-1"
+            />
+          </td>
+          <td class="w-1/5 text-center">
+            <WalletRelatedButton
+              @parentEvent="sendWallet"
+              label="送る"
+              type="button"
+              class="py-1"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <div
       v-show="loadingAnimationDisplay"
@@ -33,47 +65,49 @@
       <LoadingAnimation />
     </div>
 
-    <modal
-      name="notLoginWarning"
-      @before-open="threeSecondsAfterGoLoginPage"
-      :resizable="false"
-      :draggable="false"
-      :clickToClose="false"
-      class="text-center"
-    >
-      <h1 class="mt-8 text-red-500 text-4xl">警告</h1>
-      <div class="mt-8 text-red-500 text-2xl">
-        <p>あなたはログインしていません</p>
-        <p>先にログインしてください</p>
-      </div>
-      <p class="mt-8">3秒後に自動的にログイン画面に遷移します</p>
-    </modal>
+    <ConfirmWalletModal />
+    <NotLoginWarningModal />
   </div>
 </template>
 
 <script>
 import AccountRelatedButton from "../components/AccountRelatedButton.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
+import WalletRelatedButton from "../components/WalletRelatedButton.vue";
+import ConfirmWalletModal from "../components/Modal/ConfirmWalletModal.vue";
+import NotLoginWarningModal from "../components/Modal/NotLoginWarningModal.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default {
   name: "DashBoard",
-  components: { AccountRelatedButton, LoadingAnimation },
+  components: {
+    AccountRelatedButton,
+    LoadingAnimation,
+    WalletRelatedButton,
+    ConfirmWalletModal,
+    NotLoginWarningModal,
+  },
   data() {
     return {};
   },
   mounted() {
-    window.onload = () => {
-      onAuthStateChanged(getAuth(), (user) => {
-        if (!user) {
-          this.$modal.show("notLoginWarning");
-        }
-      });
-    };
+    onAuthStateChanged(getAuth(), (user) => {
+      if (!user) {
+        this.$modal.show("notLoginWarning");
+      } else {
+        const currentUserName = user.displayName;
+        this.$store.dispatch(
+          "UserInformation/createUserInformationArr",
+          currentUserName
+        );
+      }
+    });
   },
-  beforeUpdate() {},
   computed: {
-    currentUserName() {
-      return this.$store.getters["Login/currentUserName"];
+    userInformationArr() {
+      return this.$store.getters["UserInformation/userInformationArr"];
+    },
+    currentUserInformationObj() {
+      return this.$store.getters["UserInformation/currentUserInformationObj"];
     },
     loadingAnimationDisplay() {
       return this.$store.getters["Logout/loadingAnimationDisplay"];
@@ -83,11 +117,15 @@ export default {
     logout() {
       this.$store.dispatch("Logout/logout");
     },
-    threeSecondsAfterGoLoginPage() {
-      setTimeout(this.goLoginPage, 3000);
+    confirmWallet(userInformation) {
+      this.$store.commit(
+        "UserInformation/updateSelectUserInformationObj",
+        userInformation
+      );
+      this.$modal.show("confirmWallet");
     },
-    goLoginPage() {
-      this.$router.push({ path: "/" });
+    sendWallet() {
+      console.log("walletを送る");
     },
   },
 };

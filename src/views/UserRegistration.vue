@@ -9,8 +9,13 @@
         placeHolder="ユーザー名を入力してください"
         class="mt-8"
       />
-      <div v-if="$v.userName.$error" class="text-red-500 mt-3">
-        <p v-if="!$v.userName.required">ユーザー名を入力してください</p>
+      <div class="text-red-500 mt-3">
+        <div v-if="$v.userName.$error">
+          <p v-if="!$v.userName.required">ユーザー名を入力してください</p>
+        </div>
+        <p v-if="userNameDuplicateErrorDisplayDecision">
+          このユーザー名は既に使用されています
+        </p>
       </div>
 
       <FormInput
@@ -142,6 +147,11 @@ export default {
     };
   },
   computed: {
+    userNameDuplicateErrorDisplayDecision() {
+      return this.$store.getters[
+        "RegisterUser/userNameDuplicateErrorDisplayDecision"
+      ];
+    },
     emailAlreadyInUseErrorDisplayDecision() {
       return this.$store.getters[
         "RegisterUser/emailAlreadyInUseErrorDisplayDecision"
