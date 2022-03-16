@@ -46,11 +46,10 @@ const actions = {
   },
   async confirmIfUserNameNotDuplicate(context, userName) {
     try {
-      const userNameArr = [];
       const q = collection(getFirestore(), "users");
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        userNameArr.push(doc.data().user_name);
+      const userNameArr = querySnapshot.docs.map((doc) => {
+        return doc.data().user_name;
       });
       if (userNameArr.some((value) => value === userName)) {
         context.commit("updateUserNameDuplicateErrorDisplayDecision", true);

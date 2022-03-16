@@ -32,11 +32,10 @@ const mutations = {
 
 const actions = {
   async createUserInformationArr(context, currentUserName) {
-    const userInformationArr = [];
     const q = collection(getFirestore(), "users");
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      userInformationArr.push(doc.data());
+    const userInformationArr = querySnapshot.docs.map((doc) => {
+      return doc.data();
     });
     context.commit("updatedUserInformationArr", userInformationArr);
     context.commit("updatedCurrentUserInformationObj", { userInformationArr: userInformationArr, currentUserName: currentUserName });
