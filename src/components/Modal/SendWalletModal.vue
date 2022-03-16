@@ -48,6 +48,9 @@ export default {
     currentUserInformationObj() {
       return this.$store.getters["UserInformation/currentUserInformationObj"];
     },
+    sendOpponentUserName() {
+      return this.$store.getters["UserInformation/sendOpponentUserName"];
+    },
   },
   methods: {
     sendWallet() {

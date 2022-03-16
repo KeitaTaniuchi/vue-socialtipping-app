@@ -6,12 +6,14 @@ const state = {
   userInformationArr: [],
   currentUserInformationObj: "",
   selectUserInformationObj: "",
+  sendOpponentUserName: "",
 };
 
 const getters = {
   userInformationArr: (state) => state.userInformationArr,
   currentUserInformationObj: (state) => state.currentUserInformationObj,
   selectUserInformationObj: (state) => state.selectUserInformationObj,
+  sendOpponentUserName: (state) => state.sendOpponentUserName,
 };
 
 const mutations = {
@@ -27,6 +29,9 @@ const mutations = {
   },
   updateSelectUserInformationObj(state, value) {
     state.selectUserInformationObj = value;
+  },
+  updateSendOpponentUserName(state, value) {
+    state.sendOpponentUserName = value;
   },
 };
 
