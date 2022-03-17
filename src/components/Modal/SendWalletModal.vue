@@ -45,16 +45,32 @@ export default {
     };
   },
   computed: {
+    userInformationArr() {
+      return this.$store.getters["UserInformation/userInformationArr"];
+    },
     currentUserInformationObj() {
       return this.$store.getters["UserInformation/currentUserInformationObj"];
     },
-    sendOpponentUserName() {
-      return this.$store.getters["UserInformation/sendOpponentUserName"];
+    sendOpponentUserId() {
+      return this.$store.getters["UserInformation/sendOpponentUserId"];
     },
   },
   methods: {
-    sendWallet() {
-      console.log("送る");
+    async sendWallet() {
+      this.$modal.hide("sendWallet");
+      await this.$store.dispatch("UserInformation/updatePoint", {
+        id: this.currentUserInformationObj.id,
+        sendPointQuantity: -this.sendPointQuantity,
+      });
+      await this.$store.dispatch("UserInformation/updatePoint", {
+        id: this.sendOpponentUserId,
+        sendPointQuantity: this.sendPointQuantity,
+      });
+      await this.$store.dispatch(
+        "UserInformation/createUserInformationArr",
+        this.currentUserInformationObj.user_name
+      );
+      this.sendPointQuantity = "";
     },
   },
 };

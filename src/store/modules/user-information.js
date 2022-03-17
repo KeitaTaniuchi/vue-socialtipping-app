@@ -1,19 +1,19 @@
 "use strict";
 
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, updateDoc, increment } from "firebase/firestore";
 
 const state = {
   userInformationArr: [],
   currentUserInformationObj: "",
   selectUserInformationObj: "",
-  sendOpponentUserName: "",
+  sendOpponentUserId: "",
 };
 
 const getters = {
   userInformationArr: (state) => state.userInformationArr,
   currentUserInformationObj: (state) => state.currentUserInformationObj,
   selectUserInformationObj: (state) => state.selectUserInformationObj,
-  sendOpponentUserName: (state) => state.sendOpponentUserName,
+  sendOpponentUserId: (state) => state.sendOpponentUserId,
 };
 
 const mutations = {
@@ -30,8 +30,8 @@ const mutations = {
   updateSelectUserInformationObj(state, value) {
     state.selectUserInformationObj = value;
   },
-  updateSendOpponentUserName(state, value) {
-    state.sendOpponentUserName = value;
+  updateSendOpponentUserId(state, value) {
+    state.sendOpponentUserId = value;
   },
 };
 
@@ -40,10 +40,16 @@ const actions = {
     const q = collection(getFirestore(), "users");
     const querySnapshot = await getDocs(q);
     const userInformationArr = querySnapshot.docs.map((doc) => {
-      return doc.data();
+      return { id: doc.id, user_name: doc.data().user_name, point: doc.data().point };
     });
     context.commit("updatedUserInformationArr", userInformationArr);
     context.commit("updatedCurrentUserInformationObj", { userInformationArr: userInformationArr, currentUserName: currentUserName });
+  },
+  async updatePoint(context, { id, sendPointQuantity }) {
+    const ref = doc(getFirestore(), "users", id);
+    await updateDoc(ref, {
+      point: increment(sendPointQuantity),
+    });
   },
 };
 

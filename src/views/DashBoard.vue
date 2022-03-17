@@ -38,7 +38,7 @@
           </td>
           <td class="w-1/5 text-center">
             <WalletRelatedButton
-              @parentEvent="sendWalletModalOpen(userInformation.user_name)"
+              @parentEvent="sendWalletModalOpen(userInformation.id)"
               label="送る"
               type="button"
               class="py-1"
@@ -127,10 +127,10 @@ export default {
       );
       this.$modal.show("confirmWallet");
     },
-    sendWalletModalOpen(sendOpponentUserName) {
+    sendWalletModalOpen(sendOpponentUserId) {
       this.$store.commit(
-        "UserInformation/updateSendOpponentUserName",
-        sendOpponentUserName
+        "UserInformation/updateSendOpponentUserId",
+        sendOpponentUserId
       );
       this.$modal.show("sendWallet");
     },
