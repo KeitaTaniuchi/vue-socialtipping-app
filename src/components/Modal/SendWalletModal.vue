@@ -58,12 +58,9 @@ export default {
   methods: {
     async sendWallet() {
       this.$modal.hide("sendWallet");
-      await this.$store.dispatch("UserInformation/updatePoint", {
-        id: this.currentUserInformationObj.id,
-        sendPointQuantity: -this.sendPointQuantity,
-      });
-      await this.$store.dispatch("UserInformation/updatePoint", {
-        id: this.sendOpponentUserId,
+      await this.$store.dispatch("UserInformation/sendPoint", {
+        currentUserId: this.currentUserInformationObj.id,
+        sendOpponentUserId: this.sendOpponentUserId,
         sendPointQuantity: this.sendPointQuantity,
       });
       await this.$store.dispatch(
