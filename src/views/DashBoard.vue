@@ -38,7 +38,7 @@
           </td>
           <td class="w-1/5 text-center">
             <WalletRelatedButton
-              @parentEvent="sendWallet"
+              @parentEvent="sendWalletModalOpen(userInformation.id)"
               label="送る"
               type="button"
               class="py-1"
@@ -67,15 +67,17 @@
 
     <ConfirmWalletModal />
     <NotLoginWarningModal />
+    <SendWalletModal />
   </div>
 </template>
 
 <script>
-import AccountRelatedButton from "../components/AccountRelatedButton.vue";
+import AccountRelatedButton from "../components/Button/AccountRelatedButton.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
-import WalletRelatedButton from "../components/WalletRelatedButton.vue";
+import WalletRelatedButton from "../components/Button/WalletRelatedButton.vue";
 import ConfirmWalletModal from "../components/Modal/ConfirmWalletModal.vue";
 import NotLoginWarningModal from "../components/Modal/NotLoginWarningModal.vue";
+import SendWalletModal from "../components/Modal/SendWalletModal.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 export default {
   name: "DashBoard",
@@ -85,6 +87,7 @@ export default {
     WalletRelatedButton,
     ConfirmWalletModal,
     NotLoginWarningModal,
+    SendWalletModal,
   },
   data() {
     return {};
@@ -124,8 +127,12 @@ export default {
       );
       this.$modal.show("confirmWallet");
     },
-    sendWallet() {
-      console.log("walletを送る");
+    sendWalletModalOpen(sendOpponentUserId) {
+      this.$store.commit(
+        "UserInformation/updateSendOpponentUserId",
+        sendOpponentUserId
+      );
+      this.$modal.show("sendWallet");
     },
   },
 };

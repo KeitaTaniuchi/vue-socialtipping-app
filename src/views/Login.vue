@@ -84,10 +84,10 @@
 </template>
 
 <script>
-import AccountRelatedButton from "../components/AccountRelatedButton.vue";
+import AccountRelatedButton from "../components/Button/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
-import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
+import TogglePasswordDisplayButton from "../components/Button/TogglePasswordDisplayButton.vue";
 import { required, email } from "vuelidate/lib/validators";
 export default {
   name: "Login",

@@ -121,11 +121,11 @@
 </template>
 
 <script>
-import AccountRelatedButton from "../components/AccountRelatedButton.vue";
+import AccountRelatedButton from "../components/Button/AccountRelatedButton.vue";
 import FormInput from "../components/FormInput.vue";
 import LoadingAnimation from "../components/LoadingAnimation.vue";
 import PasswordRequiredAccordion from "../components/PasswordRequiredAccordion.vue";
-import TogglePasswordDisplayButton from "../components/TogglePasswordDisplayButton.vue";
+import TogglePasswordDisplayButton from "../components/Button/TogglePasswordDisplayButton.vue";
 import PasswordDecision from "../definition/UserRegistrationView/password-decision";
 import { required, minLength, email } from "vuelidate/lib/validators";
 export default {
